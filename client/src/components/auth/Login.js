@@ -1,8 +1,11 @@
 
 import React, {Fragment, useState} from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {login} from '../../actions/auth'
 
-const Login = () => {
+const Login = ({login}) => {
     const [formData, setFormData] = useState({
         email:'',
         password:'',
@@ -14,8 +17,7 @@ const Login = () => {
     
     const onSubmit = async e => {
         e.preventDefault();
-        if(!password) console.log('Password not match');
-        else console.log("Success");
+        login(email,password);        
         // {
         //     const newUser = {
         //     email,
@@ -35,7 +37,7 @@ const Login = () => {
         //     }
         //   }
          
-    }
+    };
 
     
 
@@ -52,7 +54,7 @@ const Login = () => {
             name="email"
             value={email}   
             onChange={e => onChange(e)} 
-            required />
+            />
         </div>
         <div class="form-group">
           <input
@@ -62,7 +64,7 @@ const Login = () => {
             minLength="6"
             value={password}
             onChange={e => onChange(e)} 
-            required
+            
           />
         </div>
         <input type="submit" class="btn btn-primary" value="Login" />
@@ -74,4 +76,8 @@ const Login = () => {
     )
 }
 
-export default Login
+Login.prototype = {
+  login: PropTypes.func.isRequired
+}
+
+export default connect(null,{login})(Login);
