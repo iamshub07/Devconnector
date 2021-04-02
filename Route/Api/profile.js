@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
+const Post = require('../../models/Post');
 const User = require('../../models/User');
 const { check, validationResult } = require('express-validator');
 const request = require('request');
@@ -142,11 +143,13 @@ router.get('/user/:user_id', async (req, res) => {
 //@access PRIVATE
 router.delete('/', auth, async (req, res) => {
     try {
+        //Remove User Post
+        await Post.deleteMany({ user: req.user.id });
         //Remove Profile
-        await Profile.findOneAndDelete({ user: req.user.id });
+        await Profile.findOneAndRemove({ user: req.user.id });
         //Remove User
-        await User.findOneAndDelete({ _id: req.user.id });
-        res.json(profile);
+        await User.findOneAndRemove({ _id: req.user.id });
+        res.json("profile deleted");
     }
     catch (err) {
         console.error(err.message);
@@ -226,7 +229,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
             .indexOf(req.params.exp_id);
         profile.experience.splice(removeIndex, 1);
         await profile.save();
-        res.json({ msg: 'Experience Deleted' });
+        res.json(profile);
     }
     catch (err) {
         console.error(err.message);
