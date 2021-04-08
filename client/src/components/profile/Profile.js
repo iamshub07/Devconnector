@@ -6,6 +6,7 @@ import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
 import ProfileEducation from './ProfileEducation';
+import ProfileGithub from './ProfileGithub';
 import { connect } from 'react-redux';
 import { getProfilebyid } from '../../actions/profile';
 
@@ -56,7 +57,15 @@ const Profile = ({getProfilebyid, profile:{profile,loading}, auth ,match}) => {
                 <h4>No education credentials</h4>
               )}
             </div>
-                      </div>
+            <div class="profile-github">
+          <h2 class="text-primary my-1">
+            <i class="fab fa-github"></i> Github Repos
+          </h2>{profile.githubusername && 
+            <span>
+                <ProfileGithub profile={profile} />
+             </span> }
+          </div>
+            </div>
 
                 </Fragment>}
             </Fragment>
